@@ -45,7 +45,7 @@ func (dp *debugParser) logf(ps *State, result *Result, format string, args ...in
 	buf.WriteString(fmt.Sprintf("%-15s", ps.Preview(15)))
 	buf.WriteString(" | ")
 	buf.WriteString(strings.Repeat("  ", len(activeParsers)-1))
-	buf.WriteString(fmt.Sprint(format, args...))
+	buf.WriteString(fmt.Sprint(append([]interface{}{format}, args...)...))
 	if ps.Errored() {
 		buf.WriteString(fmt.Sprintf(" did not find %s", ps.Error.expected))
 	} else if result != nil {
