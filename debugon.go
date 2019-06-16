@@ -74,10 +74,10 @@ func (dp *debugParser) logStart(ps *State) {
 func (dp *debugParser) logEnd(ps *State, result *Result) {
 	if log != nil {
 		if pendingOpenLog != "" {
-			fmt.Fprintf(log, dp.logf(ps, result, dp.Name()))
+			fmt.Fprint(log, dp.logf(ps, result, dp.Name()))
 			pendingOpenLog = ""
 		} else {
-			fmt.Fprintf(log, dp.logf(ps, result, "}"))
+			fmt.Fprint(log, dp.logf(ps, result, "}"))
 		}
 	}
 }
