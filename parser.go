@@ -197,13 +197,13 @@ func parseMatcher(matcher string) (alphabet string, ranges [][]rune) {
 //  - min and max: Chars("a-z0-9", 4, 6) will match 4-6 lowercase alphanumeric characters
 // the above can be combined in any order
 func Chars(matcher string, repetition ...int) Parser {
-	return NewParser("["+matcher+"]", charsImpl(matcher, false, repetition...))
+	return NewParser(fmt.Sprintf("Chars(%q)", matcher), charsImpl(matcher, false, repetition...))
 }
 
 // NotChars accepts the full range of input from Chars, but it will stop when any
 // character matches. If you need to match until you see a sequence use Until instead
 func NotChars(matcher string, repetition ...int) Parser {
-	return NewParser("!["+matcher+"]", charsImpl(matcher, true, repetition...))
+	return NewParser(fmt.Sprintf("!Chars(%q)", matcher), charsImpl(matcher, true, repetition...))
 }
 
 func charsImpl(matcher string, stopOn bool, repetition ...int) Parser {
