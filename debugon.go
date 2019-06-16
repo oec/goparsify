@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/vektah/goparsify/debug"
+	"github.com/oec/goparsify/debug"
 )
 
 var log io.Writer = nil
@@ -45,7 +45,7 @@ func (dp *debugParser) logf(ps *State, result *Result, format string, args ...in
 	buf.WriteString(fmt.Sprintf("%-15s", ps.Preview(15)))
 	buf.WriteString(" | ")
 	buf.WriteString(strings.Repeat("  ", len(activeParsers)-1))
-	buf.WriteString(fmt.Sprintf(format, args...))
+	buf.WriteString(fmt.Sprint(format, args...))
 	if ps.Errored() {
 		buf.WriteString(fmt.Sprintf(" did not find %s", ps.Error.expected))
 	} else if result != nil {
