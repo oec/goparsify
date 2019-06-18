@@ -17,10 +17,10 @@ func (e *Error) Error() string { return fmt.Sprintf("offset %d: expected %s", e.
 
 // UnparsedInputError is returned by Run when not all of the input was consumed. There may still be a valid result
 type UnparsedInputError struct {
-	remaining string
+	Remaining string
 }
 
 // Error satisfies the golang error interface
 func (e UnparsedInputError) Error() string {
-	return "left unparsed: " + e.remaining
+	return "left unparsed: " + e.Remaining
 }
