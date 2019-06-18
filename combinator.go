@@ -35,7 +35,6 @@ func NoAutoWS(parser Parserish) Parser {
 // Any matches the first successful parser and returns its result
 func Any(parsers ...Parserish) Parser {
 	parserfied := ParsifyAll(parsers...)
-	// Records which parser was successful for each byte, and will use it first next time.
 
 	return NewParser("Any()", func(ps *State, node *Result) {
 		ps.WS(ps)
@@ -45,13 +44,7 @@ func Any(parsers ...Parserish) Parser {
 		}
 		startpos := ps.Pos
 
-		longestError := ps.Error
-		if ps.Cut <= startpos {
-			ps.Recover()
-		} else {
-			return
-		}
-
+		var longestError Error
 		for _, parser := range parserfied {
 			parser(ps, node)
 			if ps.Errored() {
@@ -72,14 +65,14 @@ func Any(parsers ...Parserish) Parser {
 	})
 }
 
-// Some matches one or more parsers and returns the value as .Child[n]
+// Some matches zero or more parsers and returns the value as .Child[n]
 // an optional separator can be provided and that value will be consumed
 // but not returned. Only one separator can be provided.
 func Some(parser Parserish, separator ...Parserish) Parser {
 	return NewParser("Some()", manyImpl(0, parser, separator...))
 }
 
-// Many matches zero or more parsers and returns the value as .Child[n]
+// Many matches one or more parsers and returns the value as .Child[n]
 // an optional separator can be provided and that value will be consumed
 // but not returned. Only one separator can be provided.
 func Many(parser Parserish, separator ...Parserish) Parser {
