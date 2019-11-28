@@ -15,6 +15,7 @@ type Result struct {
 	Token  string
 	Child  []Result
 	Result interface{}
+	Input  string
 	Start  int
 	End    int
 }
