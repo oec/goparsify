@@ -59,12 +59,16 @@ func StringLit(allowedQuotes string) Parser {
 				}
 			case quote:
 				if buf == nil {
+					node.Start = ps.Pos + 1
+					node.End = end
 					node.Token = ps.Input[ps.Pos+1 : end]
 					ps.Pos = end + 1
 					return
 				}
-				ps.Pos = end + 1
 				node.Token = buf.String()
+				node.Start = ps.Pos
+				node.End = ps.Pos + len(node.Token)
+				ps.Pos = end + 1
 				return
 			default:
 				if buf == nil {
@@ -139,6 +143,8 @@ func NumberLit() Parser {
 			ps.ErrorHere("number")
 			return
 		}
+		node.Start = ps.Pos
+		node.End = end
 		ps.Pos = end
 	})
 }

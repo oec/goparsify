@@ -15,6 +15,8 @@ type Result struct {
 	Token  string
 	Child  []Result
 	Result interface{}
+	Start  int
+	End    int
 }
 
 // String stringifies a node. This is only called from debug code.

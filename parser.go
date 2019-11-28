@@ -109,6 +109,8 @@ func Regex(pattern string) Parser {
 	return NewParser(pattern, func(ps *State, node *Result) {
 		ps.WS(ps)
 		if match := re.FindString(ps.Get()); match != "" {
+			node.Start = ps.Pos
+			node.End = ps.Pos + len(match)
 			ps.Advance(len(match))
 			node.Token = match
 			return
@@ -128,6 +130,8 @@ func Exact(match string) Parser {
 				return
 			}
 
+			node.Start = ps.Pos
+			node.End = ps.Pos + 1
 			ps.Advance(1)
 
 			node.Token = match
@@ -140,6 +144,9 @@ func Exact(match string) Parser {
 			ps.ErrorHere(match)
 			return
 		}
+
+		node.Start = ps.Pos
+		node.End = ps.Pos + len(match)
 
 		ps.Advance(len(match))
 
@@ -241,6 +248,8 @@ func charsImpl(matcher string, stopOn bool, repetition ...int) Parser {
 			return
 		}
 
+		node.Start = ps.Pos
+		node.End = ps.Pos + matched
 		node.Token = ps.Input[ps.Pos : ps.Pos+matched]
 		ps.Advance(matched)
 	}
@@ -265,6 +274,8 @@ func Until(terminators ...string) Parser {
 		if ps.Pos == startPos {
 			ps.ErrorHere("something")
 		}
+		node.Start = startPos
+		node.End = ps.Pos
 		node.Token = ps.Input[startPos:ps.Pos]
 	})
 }

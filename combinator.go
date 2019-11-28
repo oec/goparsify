@@ -18,6 +18,8 @@ func Seq(parsers ...Parserish) Parser {
 				return
 			}
 		}
+		node.Start = startpos
+		node.End = ps.Pos
 	})
 }
 
@@ -27,7 +29,10 @@ func NoAutoWS(parser Parserish) Parser {
 	return func(ps *State, node *Result) {
 		oldWS := ps.WS
 		ps.WS = NoWhitespace
+		startpos := ps.Pos
 		parserfied(ps, node)
+		node.Start = startpos
+		node.End = ps.Pos
 		ps.WS = oldWS
 	}
 }
@@ -57,6 +62,8 @@ func Any(parsers ...Parserish) Parser {
 				ps.Recover()
 				continue
 			}
+			node.Start = startpos
+			node.End = ps.Pos
 			return
 		}
 
@@ -110,6 +117,8 @@ func manyImpl(min int, op Parserish, sep ...Parserish) Parser {
 				}
 			}
 		}
+		node.Start = startpos
+		node.End = ps.Pos
 	}
 }
 
@@ -123,6 +132,8 @@ func Maybe(parser Parserish) Parser {
 		if ps.Errored() && ps.Cut <= startpos {
 			ps.Recover()
 		}
+		node.Start = startpos
+		node.End = ps.Pos
 	})
 }
 
@@ -133,11 +144,14 @@ func Bind(parser Parserish, val interface{}) Parser {
 	p := Parsify(parser)
 
 	return func(ps *State, node *Result) {
+		startpos := ps.Pos
 		p(ps, node)
 		if ps.Errored() {
 			return
 		}
 		node.Result = val
+		node.Start = startpos
+		node.End = ps.Pos
 	}
 }
 
@@ -147,10 +161,13 @@ func Map(parser Parserish, f func(n *Result)) Parser {
 	p := Parsify(parser)
 
 	return func(ps *State, node *Result) {
+		startpos := ps.Pos
 		p(ps, node)
 		if ps.Errored() {
 			return
 		}
+		node.Start = startpos
+		node.End = ps.Pos
 		f(node)
 	}
 }
