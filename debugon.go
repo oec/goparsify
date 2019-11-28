@@ -45,7 +45,9 @@ func (dp *debugParser) logf(ps *State, result *Result, format string, args ...in
 	buf.WriteString(fmt.Sprintf("%-15s", ps.Preview(15)))
 	buf.WriteString(" | ")
 	buf.WriteString(strings.Repeat("  ", len(activeParsers)-1))
-	buf.WriteString(fmt.Sprint(append([]interface{}{format}, args...)...))
+	//buf.WriteString(fmt.Sprintf(format, args...))
+	buf.WriteString(format)
+	buf.WriteString(fmt.Sprint(args...))
 	if ps.Errored() {
 		buf.WriteString(fmt.Sprintf(" did not find %s", ps.Error.expected))
 	} else if result != nil {
@@ -72,10 +74,10 @@ func (dp *debugParser) logStart(ps *State) {
 func (dp *debugParser) logEnd(ps *State, result *Result) {
 	if log != nil {
 		if pendingOpenLog != "" {
-			fmt.Fprintf(log, dp.logf(ps, result, dp.Name()))
+			fmt.Fprint(log, dp.logf(ps, result, dp.Name()))
 			pendingOpenLog = ""
 		} else {
-			fmt.Fprintf(log, dp.logf(ps, result, "}"))
+			fmt.Fprint(log, dp.logf(ps, result, "}"))
 		}
 	}
 }
