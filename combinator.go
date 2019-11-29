@@ -12,6 +12,7 @@ func Seq(parsers ...Parserish) Parser {
 		node.Child = make([]Result, len(parserfied))
 		startpos := ps.Pos
 		for i, parser := range parserfied {
+			node.Child[i].Input = node.Input
 			parser(ps, &node.Child[i])
 			if ps.Errored() {
 				ps.Pos = startpos
@@ -97,7 +98,7 @@ func manyImpl(min int, op Parserish, sep ...Parserish) Parser {
 		node.Child = make([]Result, 0, 5)
 		startpos := ps.Pos
 		for {
-			node.Child = append(node.Child, Result{})
+			node.Child = append(node.Child, Result{Input: node.Input})
 			opParser(ps, &node.Child[len(node.Child)-1])
 			if ps.Errored() {
 				if len(node.Child)-1 < min || ps.Cut > ps.Pos {
