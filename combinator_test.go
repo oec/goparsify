@@ -53,7 +53,7 @@ func TestAny(t *testing.T) {
 			Seq("hello", "world", "."),
 			Seq("hello", "brother"),
 		))
-		require.Equal(t, "offset 11: expected .", p2.Error.Error())
+		require.Equal(t, "offset 11: expected nope or .", p2.Error.Error())
 		require.Equal(t, 11, p2.Error.Pos())
 		require.Equal(t, 0, p2.Pos)
 	})
