@@ -3,7 +3,6 @@ package goparsify
 import (
 	"testing"
 
-	"fmt"
 	"os"
 
 	"github.com/stretchr/testify/require"
@@ -79,8 +78,6 @@ func TestAny(t *testing.T) {
 
 		t.Run("ab a", func(t *testing.T) {
 			node, ps := runParser("ab a", p)
-
-			fmt.Println(node)
 
 			require.False(t, ps.Errored())
 			require.Equal(t, "ab", node.Child[0].Token)
