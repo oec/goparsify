@@ -2,6 +2,7 @@ package goparsify
 
 import (
 	"bytes"
+	"strings"
 )
 
 // Seq matches all of the given parsers in order and returns their result as .Child[n]
@@ -51,11 +52,13 @@ func Any(parsers ...Parserish) Parser {
 		startpos := ps.Pos
 
 		var longestError Error
+		expected := []string{}
 		for _, parser := range parserfied {
 			parser(ps, node)
 			if ps.Errored() {
 				if ps.Error.pos >= longestError.pos {
 					longestError = ps.Error
+					expected = append(expected, ps.Error.expected)
 				}
 				if ps.Cut > startpos {
 					break
@@ -68,7 +71,10 @@ func Any(parsers ...Parserish) Parser {
 			return
 		}
 
-		ps.Error = longestError
+		ps.Error = Error{
+			pos:      longestError.pos,
+			expected: strings.Join(expected, " or "),
+		}
 		ps.Pos = startpos
 	})
 }
