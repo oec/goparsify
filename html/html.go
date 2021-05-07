@@ -1,7 +1,7 @@
 package html
 
 import (
-	. "github.com/oec/goparsify"
+	. "kesim.org/goparsify"
 )
 
 func parse(input string) (result interface{}, err error) {

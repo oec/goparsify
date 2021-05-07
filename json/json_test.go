@@ -6,9 +6,9 @@ import (
 
 	"os"
 
-	"github.com/oec/goparsify"
 	parsecJson "github.com/prataprc/goparsec/json"
 	"github.com/stretchr/testify/require"
+	"kesim.org/goparsify"
 )
 
 func TestUnmarshal(t *testing.T) {

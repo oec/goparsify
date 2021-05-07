@@ -1,7 +1,7 @@
 package json
 
 import (
-	. "github.com/oec/goparsify"
+	. "kesim.org/goparsify"
 )
 
 var (

@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/oec/goparsify"
 	"github.com/stretchr/testify/require"
+	"kesim.org/goparsify"
 )
 
 func TestParse(t *testing.T) {
